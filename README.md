@@ -16,3 +16,18 @@ Flags:
 
 Use "contagious [command] --help" for more information about a command.
 ```
+
+```sh
+Usage:
+  contagious list [flags]
+
+Flags:
+  -h, --help            help for list
+  -n, --next-tag        Include next patch tag information
+  -o, --output string   Output file path
+```
+
+```sh
+contagious list <registry>
+contagious list <registry> -n -o matrix.json
+```
