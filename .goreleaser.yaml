@@ -9,14 +9,8 @@
 version: 2
 project_name: contagious
 
-before:
-  hooks:
-    # You may remove this if you don't use go modules.
-    - go mod tidy
-
 builds:
-  - id: contagious
-    goos:
+  - goos:
       - linux
       - darwin
     goarch:
@@ -28,10 +22,7 @@ builds:
     hooks: {}
 
 archives:
-  - id: contagious
-    builds:
-      - contagious
-    format: tar.gz
+  - formats: ["tar.gz"]
     name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
 checksum:
