@@ -7,50 +7,33 @@
 # vim: set ts=2 sw=2 tw=0 fo=cnqoj
 
 version: 2
+project_name: contagious
 
 before:
   hooks:
     # You may remove this if you don't use go modules.
     - go mod tidy
-    # you may remove this if you don't need go generate
-    - go generate ./...
 
 builds:
-  - env:
-      - CGO_ENABLED=0
+  - id: contagious
     goos:
       - linux
-      - windows
       - darwin
     goarch:
       - amd64
       - arm64
+    env:
+      - CGO_ENABLED=0
+    binary: contagious
+    hooks: {}
 
 archives:
-  - formats: [tar.gz]
-    # this name template makes the OS and Arch compatible with the results of `uname`.
-    name_template: >-
-      {{ .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
-    # use zip for windows archives
-    format_overrides:
-      - goos: windows
-        formats: [zip]
+  - id: contagious
+    builds:
+      - contagious
+    format: tar.gz
+    name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
-changelog:
-  sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
-
-release:
-  footer: >-
-
-    ---
-
-    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
+checksum:
+  name_template: "{{ .ProjectName}}_checksums.txt"
+  algorithm: sha256
