@@ -19,10 +19,10 @@ var listCmd = &cobra.Command{
 	Run:   handleList,
 }
 
-var outputFile string
+var outputFormat string
 
 func init() {
-	listCmd.Flags().StringVarP(&outputFile, "output", "o", "", "Output file path")
+	listCmd.Flags().StringVarP(&outputFormat, "output", "o", "json", "Output format (json, table)")
 	listCmd.Flags().BoolP("next-tag", "n", false, "Include next patch tag information")
 }
 
@@ -45,15 +45,19 @@ func handleList(cmd *cobra.Command, args []string) {
 		tagStore.AddImage(img)
 	}
 
-	if outputFile == "" {
+	switch outputFormat {
+	case "json":
+		jsonOutput, err := tagStore.GetJSON(nTag)
+		if err != nil {
+			os.Exit(1)
+		}
+		fmt.Println(jsonOutput)
+	case "table":
 		out, _ := tagStore.PrintTable(nTag)
 		fmt.Println(out)
 		return
-	}
-
-	jsonOutput, _ := tagStore.GetJSON(nTag)
-	err = os.WriteFile(outputFile, []byte(jsonOutput), 0644)
-	if err != nil {
+	default:
+		fmt.Println("Invalid output format")
 		os.Exit(1)
 	}
 }
