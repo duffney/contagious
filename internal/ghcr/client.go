@@ -7,12 +7,18 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 )
 
 func ListImages(username string) ([]string, error) {
 	var url = "https://api.github.com/users/" + username + "/packages?package_type=container"
-	token := GetAuthToken()
+	var token string
+
+	token = os.Getenv("GITHUB_TOKEN")
+	if token == "" {
+		token = GetAuthToken()
+	}
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
