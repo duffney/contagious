@@ -33,7 +33,7 @@ jobs:
           version: latest
           args: release --clean --config .goreleaser.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
       - name: Build and push contagious-action image with new version
         run: |
