@@ -25,16 +25,11 @@ RUN apt-get update && \
     apt-get update && \
     apt-get install -y docker-ce docker-ce-cli docker-buildx-plugin containerd.io --no-install-recommends
 
-RUN useradd -r -s /bin/false -U -m -d /app appuser
-
 WORKDIR /app
 
 COPY --from=builder /app/contagious .
 
-RUN chown -R appuser:appuser /app
 RUN cp contagious /usr/local/bin/
-
-USER appuser
 
 ENTRYPOINT ["/app/contagious"]
 
