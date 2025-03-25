@@ -31,3 +31,5 @@ Flags:
 contagious list <registry>
 contagious list <registry> -n -o matrix.json
 ```
+
+[GH-Action](https://github.com/duffney/contagious-action)
