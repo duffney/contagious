@@ -35,7 +35,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
+      # - name: Build and push contagious-action image with new version
+      #   run: |
+      #     tag="$(echo "${{ github.ref }}" | tr -d 'refs/tags/v')"
+      #     docker buildx build -t ghcr.io/duffney/contagious-action:v"$tag" --push .
       - name: Build and push contagious-action image with new version
         run: |
           tag="$(echo "${{ github.ref }}" | tr -d 'refs/tags/v')"
-          docker buildx build -t ghcr.io/duffney/contagious-action:v"$tag" --push .
+          docker buildx build \
+          --label "org.opencontainers.image.source=https://github.com/duffney/contagious-action" \
+          --label "org.opencontainers.image.description=CLI" \
+          --label "org.opencontainers.image.licenses=MIT" \
+          -t ghcr.io/duffney/contagious-action:v"$tag" \
+          --push .
