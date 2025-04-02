@@ -25,16 +25,16 @@ func NewImageTag(fullTag string) (*ImageTag, error) {
 	patchLevel := 0
 	baseTag := tag
 
-	if strings.Contains(tag, "-") {
-		tagParts := strings.Split(tag, "-")
-		if len(tagParts) != 2 {
-			return nil, fmt.Errorf("invalid tag format: %s", tag)
-		}
+	tagParts := strings.Split(tag, "-")
+	if len(tagParts) > 1 {
+		// the last part is the patch level
+		patchStr := tagParts[len(tagParts)-1]
+		// everything before the last part is the base tag
+		baseTag = strings.Join(tagParts[:len(tagParts)-1], "-")
 
-		baseTag = tagParts[0]
-		patch, err := strconv.Atoi(tagParts[1])
+		patch, err := strconv.Atoi(patchStr)
 		if err != nil {
-			return nil, fmt.Errorf("invalid patch number: %s", tagParts[1])
+			return nil, fmt.Errorf("invalid patch number: %s", patchStr)
 		}
 		patchLevel = patch
 	}
