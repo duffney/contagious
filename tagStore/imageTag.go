@@ -54,7 +54,7 @@ func (it *ImageTag) GetCurrentTag() string {
 }
 
 func (it *ImageTag) GetNextPatchTag() string {
-	return fmt.Sprintf("%s:%s-%d", it.Name, it.BaseTag, it.PatchLevel+1)
+	return fmt.Sprintf("%s-%d", it.BaseTag, it.PatchLevel+1)
 }
 
 func (it *ImageTag) IncrementPatch() {

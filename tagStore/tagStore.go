@@ -9,8 +9,8 @@ import (
 )
 
 type Matrix struct {
-	Current_tag string `json:"current_tag"`
-	Next_tag    string `json:"next_tag"`
+	Image_name     string `json:"image_name"`
+	Next_patch_tag string `json:"next_patch_tag"`
 }
 
 // TagStore type that only uses a map
@@ -60,8 +60,8 @@ func (reg *TagStore) FlattenWithOptions(includeNextTag bool) interface{} {
 		var m []Matrix
 		for _, img := range reg.ImageMap {
 			entry := Matrix{
-				Current_tag: img.GetCurrentTag(),
-				Next_tag:    img.GetNextPatchTag(),
+				Image_name:     img.GetCurrentTag(),
+				Next_patch_tag: img.GetNextPatchTag(),
 			}
 			m = append(m, entry)
 		}
